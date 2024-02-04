@@ -12,7 +12,9 @@ output "priv_subnet1_cidr" {
 output "IAC" {
   value = aws_vpc.IAC.id
 }
-
+output "IAC_cidr" {
+  value = aws_vpc.IAC.cidr
+}
 output "routable" {
-    value = aws_route_table.Main.id
+    value = aws_route_table.Private_table.id
 }

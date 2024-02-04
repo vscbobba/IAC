@@ -51,6 +51,15 @@ resource "aws_route_table" "Main" {
     gateway_id = aws_internet_gateway.MY_IGW.id
    }  
 }
+
+resource "aws_route_table" "Private_table" {
+  vpc_id = aws_vpc.IAC.id
+}
+
+resource "aws_route_table_association" "priv_subnet_associate" {
+   subnet_id = aws_subnet.Private_subnet1.id
+   route_table_id = aws_route_table.Private_table.id
+}
 resource "aws_route_table_association" "pub_subnet_associate" {
     subnet_id = aws_subnet.Public_subnet.id
     route_table_id = aws_route_table.Main.id  
