@@ -13,7 +13,7 @@ output "IAC" {
   value = aws_vpc.IAC.id
 }
 output "IAC_cidr" {
-  value = aws_vpc.IAC.cidr
+  value = aws_vpc.IAC.cidr_block
 }
 output "routable" {
     value = aws_route_table.Private_table.id
