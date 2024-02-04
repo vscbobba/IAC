@@ -121,7 +121,7 @@ resource "aws_vpc_peering_connection_accepter" "example" {
 
 resource "aws_route" "workstation_to_ec2" {
   route_table_id         = "rtb-06e7d4ebf3b36ee61"
-  destination_cidr_block = aws_vpc.IAC.cidr_block
+  destination_cidr_block = aws_subnet.Private_subnet1.id
   vpc_peering_connection_id = aws_vpc_peering_connection.VPC_peer.id
 }
 resource "aws_route" "ec2_to_workstation" {
