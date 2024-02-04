@@ -54,3 +54,35 @@ resource "aws_route_table_association" "pub_subnet_associate" {
     route_table_id = aws_route_table.Main.id  
 }
 
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.IAC.id
+
+  ingress {
+
+          description      = "TLS from VPC"
+          from_port        = var.port
+          to_port          = var.port
+          protocol         = "tcp"
+          cidr_blocks      = ["0.0.0.0/0"]
+    }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"     
+    cidr_blocks      = ["0.0.0.0/0"]
+   }
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
+
+resource "aws_instance" "frontend" {
+    ami = var.ami
+    instance_type = var.inst
+    security_groups = [aws_security_group.allow_tls.id]
+    subnet_id = aws_subnet.Public_subnet.id
+}

@@ -19,3 +19,16 @@ variable "Priv_sn3" {
     default = "20.0.3.0/24"
     type = string
 }
+variable "port" {
+  type = list
+  default = ["22","8080","80"]
+}
+variable "ami" {
+  type = string
+  default = "ami-0f3c7d07486cad139"
+}
+
+variable "inst" {
+  type = string
+  default = "t3.micro"
+}
