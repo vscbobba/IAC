@@ -31,7 +31,7 @@ resource "aws_instance" "frontend" {
 resource "aws_vpc_peering_connection" "VPC_peer" {
   vpc_id          = "vpc-013b83a7327f3ca6a"
   peer_vpc_id     = module.Network.IAC
-}
+} 
 resource "aws_vpc_peering_connection_accepter" "example" {
   provider          = aws
   vpc_peering_connection_id = aws_vpc_peering_connection.VPC_peer.id

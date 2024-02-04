@@ -3,11 +3,11 @@ output "SG" {
 }
 
 output "priv_subnet1"{
-    value = aws_subnet.Private_subnet1.cidr_block
+    value = aws_subnet.Private_subnet1.id
 }
 
 output "IAC" {
-  value = aws_vpc.IAC.cidr_block
+  value = aws_vpc.IAC.id
 }
 
 output "routable" {
