@@ -20,7 +20,7 @@ variable "Priv_sn3" {
     type = string
 }
 variable "port" {
-  type = list(string)
+  type = list(number)
   default = ["22","8080","80"]
 }
 variable "ami" {
