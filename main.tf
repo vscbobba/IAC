@@ -44,7 +44,7 @@ resource "aws_internet_gateway" "MY_IGW"{
 }
 resource "aws_route_table" "Main" {
    vpc_id = aws_vpc.IAC.id
-   route = {
+   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.MY_IGW.id
    }  
