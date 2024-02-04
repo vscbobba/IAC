@@ -96,10 +96,9 @@ resource "aws_instance" "frontend" {
             "sudo systemctl start nginx",
             "sudo rm -rf /usr/share/nginx/html/*",
             "sudo curl -o /tmp/frontend.zip https://expense-artifacts.s3.amazonaws.com/frontend.zip",
-            "sudo cd /usr/share/nginx/html",
-            "sudo unzip /tmp/frontend.zip",
-            "sudo touch expense.conf",
-            "sudo tee -a /path/to/expense.conf <<EOF",
+            "sudo unzip /tmp/frontend.zip -d /usr/share/nginx/html/",
+            "sudo touch /root/expense.conf",
+            "sudo tee -a /root/expense.conf <<EOF",
              "proxy_http_version 1.1;",
              "location /api/ { proxy_pass http://localhost:8080/; }",
              "location /health {",
@@ -107,7 +106,7 @@ resource "aws_instance" "frontend" {
              "access_log off;",
              "}",
              "EOF",
-            "sudo cp expense.conf /etc/nginx/default.d/expense.conf",
+            "sudo cp /root/expense.conf /etc/nginx/default.d/expense.conf",
             "sudo systemctl restart nginx",
      ]
      connection {
