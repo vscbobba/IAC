@@ -89,4 +89,24 @@ resource "aws_instance" "frontend" {
     instance_type = var.inst
     security_groups = [aws_security_group.allow_tls.id]
     subnet_id = aws_subnet.Public_subnet.id
+   provisioner "remote-exec" {
+     inline = [
+            "sudo dnf install nginx -y",
+            "sudo systemctl enable nginx",
+            "sudo systemctl start nginx",
+            "sudo rm -rf /usr/share/nginx/html/",
+            "sudo curl -o /tmp/frontend.zip https://expense-artifacts.s3.amazonaws.com/frontend.zip",
+            "sudo cd /usr/share/nginx/html",
+            "sudo unzip /tmp/frontend.zip",
+            "sudo touch expense.conf",
+            "sudo cp expense.conf /etc/nginx/default.d/expense.conf",
+            "sudo systemctl restart nginx",
+     ]
+     connection {
+      type     = "ssh"
+      user     = "centos" # replace with your username
+      password = "DevOps321"  # replace with your password
+      host     = self.public_ip
+     }
+   }
 }
