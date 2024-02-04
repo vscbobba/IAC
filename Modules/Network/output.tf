@@ -5,6 +5,9 @@ output "SG" {
 output "priv_subnet1"{
     value = aws_subnet.Private_subnet1.id
 }
+output "priv_subnet1_cidr" {
+    value = aws_subnet.Private_subnet1.cidr_block
+}
 
 output "IAC" {
   value = aws_vpc.IAC.id
