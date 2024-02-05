@@ -44,6 +44,18 @@ resource "aws_internet_gateway" "MY_IGW"{
         Name = "MY-IGW"
     }
 }
+
+# Create an Elastic IP for the NAT Gateway
+resource "aws_eip" "nat_gateway_eip" {
+
+}
+
+# Create a NAT Gateway in the public subnet
+resource "aws_nat_gateway" "nat_gateway" {
+  allocation_id = aws_eip.nat_gateway_eip.id
+  subnet_id     = aws_subnet.Public_subnet.id
+}
+
 resource "aws_route_table" "Main" {
    vpc_id = aws_vpc.IAC.id
    route {
@@ -60,9 +72,16 @@ resource "aws_route_table_association" "priv_subnet_associate" {
    subnet_id = aws_subnet.Private_subnet1.id
    route_table_id = aws_route_table.Private_table.id
 }
+
+resource "aws_route" "private_subnet_default_route" {
+  route_table_id         = aws_route_table.Private_table.id
+  destination_cidr_block = "0.0.0.0/0"  # Default route
+  nat_gateway_id         = aws_nat_gateway.nat_gateway.id 
+}
+
 resource "aws_route_table_association" "pub_subnet_associate" {
     subnet_id = aws_subnet.Public_subnet.id
-    route_table_id = aws_route_table.Main.id  
+    route_table_id = aws_route_table.Main.id
 }
 
 resource "aws_security_group" "allow_tls" {

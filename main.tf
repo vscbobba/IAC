@@ -28,6 +28,13 @@ resource "aws_instance" "frontend" {
               EOF
 }
 
+resource "aws_instance" "bastion" {
+    ami = var.ami
+    instance_type = var.inst
+    security_groups = [module.Network.SG]
+    subnet_id = module.Network.public_subnet
+}
+
 resource "aws_vpc_peering_connection" "VPC_peer" {
   vpc_id          = "vpc-013b83a7327f3ca6a"
   peer_vpc_id     = module.Network.IAC

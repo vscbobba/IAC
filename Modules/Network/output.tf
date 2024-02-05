@@ -9,6 +9,9 @@ output "priv_subnet1_cidr" {
     value = aws_subnet.Private_subnet1.cidr_block
 }
 
+output "public_subnet"{
+  value = aws_subnet.Public_subnet.id
+}
 output "IAC" {
   value = aws_vpc.IAC.id
 }
