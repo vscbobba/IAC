@@ -60,7 +60,7 @@ resource "aws_eip" "nat_gateway_eip" {
 # Create a NAT Gateway in the public subnet
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_gateway_eip.id
-  subnet_id     = aws_subnet.Public_subnet.id
+  subnet_id     = aws_subnet.Public_subnet1.id
 }
 
 resource "aws_route_table" "Main" {
@@ -87,7 +87,7 @@ resource "aws_route" "private_subnet_default_route" {
 }
 
 resource "aws_route_table_association" "pub_subnet_associate" {
-    subnet_id = aws_subnet.Public_subnet.id
+    subnet_id = aws_subnet.Public_subnet1.id
     route_table_id = aws_route_table.Main.id
 }
 
