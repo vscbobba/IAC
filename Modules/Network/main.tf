@@ -8,7 +8,7 @@ resource "aws_vpc" "IAC" {
 }
 
 resource "aws_subnet" "Public_subnet1" {
-   cidr_block = var.public_cidr
+   cidr_block = var.public_cidr_1
    vpc_id = aws_vpc.IAC.id
    map_public_ip_on_launch = true
    tags ={

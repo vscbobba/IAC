@@ -9,7 +9,6 @@ resource "aws_lb" "frontend_alb" {
   security_groups    = [module.Network.SG]  # Replace with the security group for the ALB
   subnets            = [module.Network.Public_subnet2, module.Network.Public_subnet1]  # Specify your public subnets
   enable_deletion_protection = false  # Set to true if you want to enable deletion protection
-
   enable_http2      = true
 }
 
