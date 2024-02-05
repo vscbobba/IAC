@@ -10,6 +10,14 @@ resource "aws_instance" "bastion" {
     security_groups = [module.Network.SG]
     subnet_id = module.Network.Public_subnet1
     iam_instance_profile = data.aws_iam_role.example-role.name
+    user_data = <<-EOF
+              #!/bin/bash
+              sudo set-hostname workstation
+              sudo dnf install ansible -y
+              sudo yum install -y yum-utils
+              sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+              sudo yum -y install terraform
+              EOF
 }
 resource "aws_instance" "frontend" {
     ami = var.ami
@@ -19,6 +27,7 @@ resource "aws_instance" "frontend" {
     subnet_id = module.Network.Public_subnet1
     user_data = <<-EOF
               #!/bin/bash
+              sudo set-hostname frontend
               sudo dnf install nginx -y
               sudo systemctl enable nginx
               sudo systemctl start nginx
@@ -46,6 +55,7 @@ resource "aws_instance" "DB" {
     iam_instance_profile = data.aws_iam_role.example-role.name
     user_data = <<-EOF
               #!/bin/bash
+              sudo set-hostname DB
               sudo dnf module disable mysql -y
               sudo tee -a /root/mysql.repo <<EOL
               [mysql]
@@ -70,6 +80,7 @@ resource "aws_instance" "backend" {
     iam_instance_profile = data.aws_iam_role.example-role.name
     user_data = <<-EOF
              #!/bin/bash
+             sudo set-hostname backend
              sudo dnf module disable nodejs -y
              sudo dnf module enable nodejs:18 -y
              sudo dnf install nodejs -y
