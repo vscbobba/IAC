@@ -74,7 +74,7 @@ resource "aws_instance" "DB" {
 }
 resource "aws_instance" "backend" {
     ami = var.ami
-    instance_type = var.inst
+    instance_type = "t3.medium"
     security_groups = [module.Network.SG]
     subnet_id = module.Network.priv_subnet2
     iam_instance_profile = data.aws_iam_role.example-role.name
