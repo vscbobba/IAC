@@ -13,8 +13,8 @@ output "priv_subnet1"{
 output "priv_subnet1_cidr" {
     value = aws_subnet.Private_subnet1.cidr_block
 }
-output "Public_subnet"{
-  value = aws_subnet.Public_subnet.id
+output "Public_subnet1"{
+  value = aws_subnet.Public_subnet1.id
 }
 output "Public_subnet2"{
   value = aws_subnet.Public_subnet2.id
