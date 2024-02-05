@@ -10,6 +10,7 @@ resource "aws_vpc" "IAC" {
 resource "aws_subnet" "Public_subnet1" {
    cidr_block = var.public_cidr_1
    vpc_id = aws_vpc.IAC.id
+   availability_zone = "us-east-1a"
    map_public_ip_on_launch = true
    tags ={
     Name = "MyPub"
@@ -18,6 +19,7 @@ resource "aws_subnet" "Public_subnet1" {
 resource "aws_subnet" "Public_subnet2" {
    cidr_block = var.public_cidr_2
    vpc_id = aws_vpc.IAC.id
+   availability_zone = "us-east-1b"
    map_public_ip_on_launch = true
    tags ={
     Name = "MyPub"
