@@ -1,12 +1,13 @@
 module "Network"{
     source = "./Modules/Network"
 }
-resource "aws_instance" "frontend" {
-    ami = var.ami
-    instance_type = var.inst
-    security_groups = [module.Network.SG]
-    subnet_id = module.Network.priv_subnet1
-    user_data = <<-EOF
+
+resource "aws_launch_configuration" "frontend_lc" {
+  name = "frontend-lc"
+  image_id = var.ami
+  instance_type = var.inst
+  security_groups = [module.Network.SG]
+  user_data = <<-EOF
               #!/bin/bash
               sudo dnf install nginx -y
               sudo systemctl enable nginx
@@ -26,6 +27,27 @@ resource "aws_instance" "frontend" {
               sudo cp /root/expense.conf /etc/nginx/default.d/expense.conf
               sudo systemctl restart nginx
               EOF
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "frontend_asg" {
+  desired_capacity     = 1
+  max_size             = 1
+  min_size             = 1
+  launch_configuration = aws_launch_configuration.frontend_lc.id
+  vpc_zone_identifier  = [module.Network.priv_subnet1]  # Use your private subnet
+
+  health_check_type          = "EC2"
+  health_check_grace_period  = 300
+  force_delete               = true
+
+  tag {
+    key                 = "Name"
+    value               = "frontend-instance"
+    propagate_at_launch = true
+  }
 }
 
 resource "aws_instance" "bastion" {
