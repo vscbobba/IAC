@@ -6,7 +6,10 @@ variable "public_cidr" {
     default = "20.0.10.0/24"
     type = string
 }
-
+variable "public_cidr_2" {
+    default = "20.0.20.0/24"
+    type = string
+}
 variable "Priv_sn1" {
     default = "20.0.1.0/24"
     type = string

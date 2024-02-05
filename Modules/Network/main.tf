@@ -15,7 +15,14 @@ resource "aws_subnet" "Public_subnet" {
     Name = "MyPub"
    }
 }
-
+resource "aws_subnet" "Public_subnet2" {
+   cidr_block = var.public_cidr_2
+   vpc_id = aws_vpc.IAC.id
+   map_public_ip_on_launch = true
+   tags ={
+    Name = "MyPub"
+   }
+}
 resource "aws_subnet" "Private_subnet1" {
    cidr_block = var.Priv_sn1
    vpc_id = aws_vpc.IAC.id
