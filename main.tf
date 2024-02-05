@@ -1,22 +1,21 @@
 module "Network"{
     source = "./Modules/Network"
 }
+data "aws_iam_role" "example-role"{
+    name = "Ec2-full"
+}
 resource "aws_instance" "bastion" {
     ami = var.ami
     instance_type = var.inst
     security_groups = [module.Network.SG]
     subnet_id = module.Network.Public_subnet1
-    iam_instance_profile = {
-      name = "EC2-full"
-    }
+    iam_instance_profile = data.aws_iam_role.example-role.name
 }
 resource "aws_instance" "frontend" {
     ami = var.ami
     instance_type = var.inst
     security_groups = [module.Network.SG]
-    iam_instance_profile = {
-      name = "EC2-full"
-    }
+    iam_instance_profile = data.aws_iam_role.example-role.name
     subnet_id = module.Network.Public_subnet1
     user_data = <<-EOF
               #!/bin/bash
@@ -44,16 +43,14 @@ resource "aws_instance" "DB" {
     instance_type = var.inst
     security_groups = [module.Network.SG]
     subnet_id = module.Network.priv_subnet1
-    iam_instance_profile = {
-      name = "EC2-full"
-    }
+    iam_instance_profile = data.aws_iam_role.example-role.name
     user_data = <<-EOF
               #!/bin/bash
               sudo dnf module disable mysql -y
               sudo tee -a /root/mysql.repo <<EOL
               [mysql]
               name=MySQL 5.7 Community Server
-              baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
+              baseurl="http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/"
               enabled=1
               gpgcheck=0
               EOL
@@ -70,9 +67,7 @@ resource "aws_instance" "backend" {
     instance_type = var.inst
     security_groups = [module.Network.SG]
     subnet_id = module.Network.priv_subnet2
-    iam_instance_profile = {
-      name = "EC2-full"
-    }
+    iam_instance_profile = data.aws_iam_role.example-role.name
     user_data = <<-EOF
              #!/bin/bash
              sudo dnf module disable nodejs -y
