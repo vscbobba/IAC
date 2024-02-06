@@ -1,10 +1,18 @@
-launch workstation from your own template, it should inlcude terraform install init.
+frontend ansible_host=20.0.10.231 ansible_user=centos ansible_ssh_pass=DevOps321
+DB ansible_host=20.0.1.88 ansible_user=centos ansible_ssh_pass=DevOps321
+backend ansible_host=20.0.2.59 ansible_user=centos ansible_ssh_pass=DevOps321
 
-then clone the git repo, start terraform implementation.
+playbook.yml
 
-It will launch Ec2 instances in public subnet, it is Bastion host
-                                private subnet, it is Frontned(we server).
+- name: start playbook
+  become: yes
+  hosts: "{{ anshost }}"
+  tasks:
+     - debug:
+         msg: "hello"
 
-If you accept VPC peering request from AWS console, you can connect to Frontned server from work station. {its just a test}
-
-Because of NAT gateway, you can conect to Bastion and Frontend servers(20.0.0.0/16) from your workstation (30.0.0.0/16)
+- name: start playbook
+  become: yes
+  hosts: "{{ anshost }}"
+  roles:
+     - testing
