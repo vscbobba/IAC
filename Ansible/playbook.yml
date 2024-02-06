@@ -1,4 +1,5 @@
 - name: start playbook
+  hosts: "{{ anshost }}"
   become: yes
   roles:
     - "{{ role_name }}"
