@@ -15,4 +15,7 @@ playbook.yml
   become: yes
   hosts: "{{ anshost }}"
   roles:
-     - testing
+     - "{{ role_name }}"
+     
+
+ansible-playbook playbook.yml -e anshost=backend -e "role_name=testing"

@@ -1,4 +1,4 @@
 - name: start playbook
   become: yes
   roles:
-    - role: "{{ role_name }}"
+    - "{{ role_name }}"
