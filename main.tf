@@ -22,45 +22,76 @@ resource "aws_instance" "bastion" {
               sudo yum -y install terraform
               EOF
 }
-resource "aws_instance" "frontend" {
+resource "aws_instance" "jenkins" {
     ami = var.ami
     instance_type = var.inst
     security_groups = [module.Network.SG]
-    iam_instance_profile = data.aws_iam_role.example-role.name
     subnet_id = module.Network.Public_subnet1
-    tags ={
-        Name = "frontend"
+    iam_instance_profile = data.aws_iam_role.example-role.name
+    tags = {
+      Name = "jenkins"
     }
     user_data = <<-EOF
               #!/bin/bash
-              sudo set-hostname frontend
+              sudo set-hostname jenkins
+              sudo dnf install java-1.8.0-openjdk-devel
+              sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+              sudo tee -a /root/jenkins.repo <<EOL
+
+              [jenkins]
+              name=Jenkins-stable
+              baseurl=http://pkg.jenkins.io/redhat
+              gpgcheck=1
+              EOL
+              sudo cat /root/jenkins.repo>>/etc/yum.repos.d/jenkins.repo
+              sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+              sudo dnf install jenkins
+              sudo systemctl start jenkins
+              sudo systemctl enable jenkins
+              sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+              sudo firewall-cmd --reload
               EOF
-}
-resource "aws_instance" "DB" {
-    ami = var.ami
-    instance_type = var.inst
-    security_groups = [module.Network.SG]
-    subnet_id = module.Network.priv_subnet1
-    iam_instance_profile = data.aws_iam_role.example-role.name
-    tags = {
-      Name = "DB"
-    }
-    user_data = <<-EOF
-              #!/bin/bash
-              sudo set-hostname DB
-              EOF
-}
-resource "aws_instance" "backend" {
-    ami = var.ami
-    instance_type = var.inst
-    security_groups = [module.Network.SG]
-    subnet_id = module.Network.priv_subnet2
-    iam_instance_profile = data.aws_iam_role.example-role.name
-    tags = {
-      Name = "backend"
-    }
-    user_data = <<-EOF
-             #!/bin/bash
-             sudo set-hostname backend
-             EOF
-}
+}   
+
+# resource "aws_instance" "frontend" {
+#     ami = var.ami
+#     instance_type = var.inst
+#     security_groups = [module.Network.SG]
+#     iam_instance_profile = data.aws_iam_role.example-role.name
+#     subnet_id = module.Network.Public_subnet1
+#     tags ={
+#         Name = "frontend"
+#     }
+#     user_data = <<-EOF
+#               #!/bin/bash
+#               sudo set-hostname frontend
+#               EOF
+# }
+# resource "aws_instance" "DB" {
+#     ami = var.ami
+#     instance_type = var.inst
+#     security_groups = [module.Network.SG]
+#     subnet_id = module.Network.priv_subnet1
+#     iam_instance_profile = data.aws_iam_role.example-role.name
+#     tags = {
+#       Name = "DB"
+#     }
+#     user_data = <<-EOF
+#               #!/bin/bash
+#               sudo set-hostname DB
+#               EOF
+# }
+# resource "aws_instance" "backend" {
+#     ami = var.ami
+#     instance_type = var.inst
+#     security_groups = [module.Network.SG]
+#     subnet_id = module.Network.priv_subnet2
+#     iam_instance_profile = data.aws_iam_role.example-role.name
+#     tags = {
+#       Name = "backend"
+#     }
+#     user_data = <<-EOF
+#              #!/bin/bash
+#              sudo set-hostname backend
+#              EOF
+# }
