@@ -34,18 +34,11 @@ resource "aws_instance" "jenkins" {
     user_data = <<-EOF
               #!/bin/bash
               sudo set-hostname jenkins
-              sudo dnf install java-1.8.0-openjdk-devel
+              sudo dnf install -y java-11-openjdk-devel
               sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
-              sudo tee -a /root/jenkins.repo <<EOL
-
-              [jenkins]
-              name=Jenkins-stable
-              baseurl=http://pkg.jenkins.io/redhat
-              gpgcheck=1
-              EOL
-              sudo cat /root/jenkins.repo>>/etc/yum.repos.d/jenkins.repo
-              sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
-              sudo dnf install jenkins
+              sudo curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
+              sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+              sudo dnf install -y jenkins
               sudo systemctl start jenkins
               sudo systemctl enable jenkins
               sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
