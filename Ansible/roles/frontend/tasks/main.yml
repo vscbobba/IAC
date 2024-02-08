@@ -1,7 +1,7 @@
 - name: install nginx
   dnf:
     name: nginx
-    state: absent
+    state: present
 
 - name: start service
   service:
