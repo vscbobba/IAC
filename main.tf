@@ -20,6 +20,15 @@ resource "aws_instance" "bastion" {
               sudo yum install -y yum-utils
               sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
               sudo yum -y install terraform
+              sudo dnf install -y java-11-openjdk-devel
+              sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+              sudo curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
+              sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+              sudo dnf install -y jenkins
+              sudo systemctl start jenkins
+              sudo systemctl enable jenkins
+              sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+              sudo firewall-cmd --reload
               EOF
 }
 resource "aws_instance" "jenkins" {
