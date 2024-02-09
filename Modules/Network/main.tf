@@ -12,6 +12,7 @@ resource "aws_subnet" "Public_subnet1" {
    vpc_id = aws_vpc.IAC.id
    availability_zone = "us-east-1a"
    map_public_ip_on_launch = true
+   enable_resource_name_dns_a_record_on_launch = true
    tags ={
     Name = "MyPub"
    }
