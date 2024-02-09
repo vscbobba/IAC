@@ -1,3 +1,3 @@
-def call(){
-    ansible --version
+def call() {
+   sh 'ansible --version'
 }
