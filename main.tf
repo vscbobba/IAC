@@ -11,7 +11,7 @@ resource "aws_instance" "workstation" {
     subnet_id = module.Network.Public_subnet1
     iam_instance_profile = data.aws_iam_role.example-role.name
     tags = {
-      Name = "bastion"
+      Name = "workstation"
     }
     user_data = <<-EOF
               #!/bin/bash
