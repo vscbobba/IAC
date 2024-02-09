@@ -20,7 +20,7 @@ pipeline {
         }
         stage('shell commands') {
             steps{
-                sh 'ansible-playbook playbook.yml -e anshost=workstation -e role_name=frontend'
+                sh 'ansible-playbook Ansible/playbook.yml -e anshost=workstation -e role_name=frontend'
             }
         }   
     }
