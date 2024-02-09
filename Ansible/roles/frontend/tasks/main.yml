@@ -6,4 +6,4 @@
 - name: start service
   service:
       name: nginx
-      state: stopped
+      state: started
