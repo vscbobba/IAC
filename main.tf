@@ -31,29 +31,29 @@ resource "aws_instance" "bastion" {
               sudo firewall-cmd --reload
               EOF
 }
-resource "aws_instance" "jenkins" {
-    ami = var.ami
-    instance_type = var.inst
-    security_groups = [module.Network.SG]
-    subnet_id = module.Network.Public_subnet1
-    iam_instance_profile = data.aws_iam_role.example-role.name
-    tags = {
-      Name = "jenkins"
-    }
-    user_data = <<-EOF
-              #!/bin/bash
-              sudo set-hostname jenkins
-              sudo dnf install -y java-11-openjdk-devel
-              sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
-              sudo curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
-              sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-              sudo dnf install -y jenkins
-              sudo systemctl start jenkins
-              sudo systemctl enable jenkins
-              sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
-              sudo firewall-cmd --reload
-              EOF
-}   
+# resource "aws_instance" "jenkins" {
+#     ami = var.ami
+#     instance_type = var.inst
+#     security_groups = [module.Network.SG]
+#     subnet_id = module.Network.Public_subnet1
+#     iam_instance_profile = data.aws_iam_role.example-role.name
+#     tags = {
+#       Name = "jenkins"
+#     }
+#     user_data = <<-EOF
+#               #!/bin/bash
+#               sudo set-hostname jenkins
+#               sudo dnf install -y java-11-openjdk-devel
+#               sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+#               sudo curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
+#               sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+#               sudo dnf install -y jenkins
+#               sudo systemctl start jenkins
+#               sudo systemctl enable jenkins
+#               sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+#               sudo firewall-cmd --reload
+#               EOF
+# }   
 
 # resource "aws_instance" "frontend" {
 #     ami = var.ami
