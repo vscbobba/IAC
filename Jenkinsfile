@@ -13,6 +13,11 @@ pipeline {
                 git branch: 'jenkins', credentialsId: 'slave', url: 'https://github.com/vscbobba/IAC.git'
             }
         }
+        stage('test shared library'){
+            steps {
+                sample()
+            }
+        }
         stage('shell commands') {
             steps{
                 sh 'cd Ansible'
