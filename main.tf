@@ -30,11 +30,11 @@ resource "aws_instance" "workstation" {
               sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
               sudo firewall-cmd --reload
               sudo git clone https://github.com/vscbobba/IAC.git
-              cd IAC
+              cd /IAC
               sudo git pull origin jenkins
               sudo chmod 777 /etc/ansible/hosts
               sudo echo "workstation ansible_host=workstation.bobbascloud.online ansible_user=centos ansible_ssh_pass=DevOps321">>/etc/ansible/hosts
-              #sudo ansible-playbook Ansible/playbook.yml -e role_name=frontend -e anshost=workstation
+              sudo ansible-playbook Ansible/playbook.yml -e role_name=frontend -e anshost=workstation
               EOF
 }
 # resource "aws_instance" "jenkins" {
