@@ -1,7 +1,7 @@
 module "Network"{
     source = "./Modules/Network"
 }
-data "aws_iam_role" "example-role"{
+data "aws_iam_role" "ws-role"{
     name = "Ec2-full"
 }
 resource "aws_instance" "workstation" {
@@ -9,7 +9,7 @@ resource "aws_instance" "workstation" {
     instance_type = var.inst
     security_groups = [module.Network.SG]
     subnet_id = module.Network.Public_subnet1
-    iam_instance_profile = data.aws_iam_role.example-role.name
+    iam_instance_profile = data.aws_iam_role.ws-role.name
     tags = {
       Name = "workstation"
     }
