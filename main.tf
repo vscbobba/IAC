@@ -34,7 +34,12 @@ resource "aws_instance" "workstation" {
               sudo git pull origin jenkins
               sudo chmod 777 /etc/ansible/hosts
               sudo echo "workstation ansible_host=workstation.bobbascloud.online ansible_user=centos ansible_ssh_pass=DevOps321">>/etc/ansible/hosts
-              sudo ansible-playbook Ansible/playbook.yml -e role_name=frontend -e anshost=workstation
+              #sudo ansible-playbook Ansible/playbook.yml -e role_name=frontend -e anshost=workstation
+              #sudo tar czf jenkins_backup.tar.gz /var/lib/jenkins
+              #sudo aws s3 cp jenkins_backup.tar.gz s3://venkat-s3data/jenkins_backup.tar.gz
+              sudo aws s3 cp s3://venkat-s3data/jenkins_backup.tar.gz .
+              sudo tar xzf jenkins_backup.tar.gz -C /
+              sudo systemctl restart jenkins
               EOF
 }
 # resource "aws_instance" "jenkins" {

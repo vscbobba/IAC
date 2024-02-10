@@ -1,17 +1,8 @@
-playbook.yml
 
-- name: start playbook
-  become: yes
-  hosts: "{{ anshost }}"
-  tasks:
-     - debug:
-         msg: "hello"
+use #cmds in userscript from your jenkins server, take backup.
 
-- name: start playbook
-  become: yes
-  hosts: "{{ anshost }}"
-  roles:
-     - "{{ role_name }}"
+you can use jenkins backup from s3 bucket and restore here. (as per user data in script).
 
 
+example:
 ansible-playbook playbook.yml -e anshost=backend -e "role_name=testing"
