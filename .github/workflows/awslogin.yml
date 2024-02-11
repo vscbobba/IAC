@@ -27,18 +27,11 @@ jobs:
         run: echo Hello, world!
 
       # Runs a set of commands using the runners shell
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+      - name: Run AWS Workflow from Repo_A
+        uses: vscbobba/AWS-main.git@main/.github/workflows/blank.yml
 
-      - name: Configure AWS CLI
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set default.region ${{ secrets.AWS_REGION }}
       - name: Start Terraform
         run: |
            terraform init
            terraform fmt
-           terraform plan 
+           terraform plan
