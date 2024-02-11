@@ -28,7 +28,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run AWS Workflow from Repo_A
-        uses: vscbobba/AWS-main.git@main/.github/workflows/blank.yml
+        uses: vscbobba/AWS-main@main/.github/workflows/blank.yml
 
       - name: Start Terraform
         run: |
