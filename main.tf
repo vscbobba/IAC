@@ -17,9 +17,6 @@ resource "aws_instance" "workstation" {
               #!/bin/bash
               sudo set-hostname workstation
               sudo dnf install ansible -y
-              sudo yum install -y yum-utils
-              sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-              sudo yum -y install terraform
               sudo git clone https://github.com/vscbobba/IAC.git
               cd /IAC
               sudo git pull origin jenkins
