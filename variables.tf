@@ -32,6 +32,6 @@ variable "ami" {
 }
 
 variable "inst" {
-  type = string
-  default = "t3.micro"
+  type = list
+  default = ["t3.small","t3.medium"]
 }
