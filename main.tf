@@ -112,3 +112,28 @@ resource "aws_instance" "backend" {
               sudo mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p$db_password < /app/schema/backend.sql 
               EOF
 }
+
+data "aws_route53_zone" "hostedzone" {
+  name = "bobbascloud.online"
+}
+resource "aws_route53_record" "frontend" {
+  zone_id = data.aws_route53_zone.hostedzone.zone_id
+  name    = "frontend.dev"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_instance.frontend.public_ip]
+}
+resource "aws_route53_record" "DB" {
+  zone_id = data.aws_route53_zone.hostedzone.zone_id
+  name    = "DB.dev"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_instance.DB.public_ip]
+}
+resource "aws_route53_record" "backend" {
+  zone_id = data.aws_route53_zone.hostedzone.zone_id
+  name    = "backend.dev"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_instance.backend.public_ip]
+}
