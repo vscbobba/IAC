@@ -30,6 +30,7 @@ resource "aws_subnet" "Private_subnet1" {
    cidr_block = var.Priv_sn1
    vpc_id = aws_vpc.IAC.id
    availability_zone = "us-east-1a"
+   map_public_ip_on_launch = false
    tags ={
     Name = "MyPriv1"
    }
@@ -38,6 +39,7 @@ resource "aws_subnet" "Private_subnet2" {
    cidr_block = var.Priv_sn2
    vpc_id = aws_vpc.IAC.id
    availability_zone = "us-east-1b"
+   map_public_ip_on_launch = false
    tags ={
     Name = "MyPriv2"
    }
@@ -46,6 +48,7 @@ resource "aws_subnet" "Private_subnet3" {
    cidr_block = var.Priv_sn3
    vpc_id = aws_vpc.IAC.id
    availability_zone = "us-east-1c"
+   map_public_ip_on_launch = false
    tags ={
     Name = "MyPriv3"
    }
