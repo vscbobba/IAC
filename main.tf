@@ -25,7 +25,6 @@ resource "aws_instance" "workstation" {
               #sudo ansible-playbook Ansible/playbook.yml -e role_name=frontend -e anshost=workstation
               EOF
 }
-
 # resource "aws_instance" "frontend" {
 #     ami = var.ami
 #     instance_type = var.inst

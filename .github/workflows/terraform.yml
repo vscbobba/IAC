@@ -40,6 +40,7 @@ jobs:
           aws configure set default.region ${{ secrets.AWS_REGION }}
       - name: install checkov
         run: pip3 install checkov
+        
       - name: run chekcov
         run: checkov -d .
       
