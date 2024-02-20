@@ -6,7 +6,7 @@ data "aws_iam_role" "ws-role"{
 }
 resource "aws_instance" "workstation" {
     ami = var.ami
-    instance_type = var.inst
+    instance_type = var.inst == null ? "t3.large" : var.inst
     security_groups = [module.Network.SG]
     subnet_id = module.Network.Public_subnet1
     iam_instance_profile = data.aws_iam_role.ws-role.name
