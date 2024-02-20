@@ -29,5 +29,5 @@ variable "ami" {
 
 variable "inst" {
   type = string
-  default = ""
+  default = "t3.micro"
 }
