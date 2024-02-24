@@ -8,8 +8,14 @@ resource "aws_lb" "frontend_alb" {
   load_balancer_type = "application"
   security_groups    = [module.Network.SG]  # Replace with the security group for the ALB
   subnets            = [module.Network.Public_subnet2, module.Network.Public_subnet1]  # Specify your public subnets
-  enable_deletion_protection = false  # Set to true if you want to enable deletion protection
+  enable_deletion_protection = true  # Set to true if you want to enable deletion protection
   enable_http2      = true
+  drop_invalid_header_fields = true
+  access_logs {
+    bucket  = terraform-project-1-2023
+    prefix  = "logs"
+    enabled = true
+  }
 }
 
 resource "aws_lb_target_group" "frontend_tg" {
@@ -27,7 +33,7 @@ resource "aws_lb_target_group" "frontend_tg" {
 resource "aws_lb_listener" "frontend_listener" {
   load_balancer_arn = aws_lb.frontend_alb.arn
   port              = 80
-  protocol          = "HTTP"
+  protocol          = "HTTPS"
 
   default_action {
     type             = "forward"
@@ -45,6 +51,9 @@ resource "aws_launch_configuration" "frontend_lc" {
   image_id = var.ami
   instance_type = var.inst
   security_groups = [module.Network.SG]
+  root_block_device {
+    encrypted     = true
+  }
   user_data = <<-EOF
               #!/bin/bash
               sudo dnf install nginx -y
@@ -74,6 +83,7 @@ resource "aws_autoscaling_group" "frontend_asg" {
   desired_capacity     = 1
   max_size             = 1
   min_size             = 1
+  
   launch_configuration = aws_launch_configuration.frontend_lc.id
   vpc_zone_identifier  = [module.Network.priv_subnet1]  # Use your private subnet
 
@@ -93,6 +103,12 @@ resource "aws_instance" "bastion" {
     instance_type = var.inst
     security_groups = [module.Network.SG]
     subnet_id = module.Network.Public_subnet1
+    monitoring = true
+    iam_instance_profile = "Ec2-full"
+    ebs_optimized = true
+    root_block_device {
+      encrypted     = true
+    }
 }
 
 resource "aws_vpc_peering_connection" "VPC_peer" {

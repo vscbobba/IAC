@@ -11,7 +11,7 @@ resource "aws_subnet" "Public_subnet1" {
    cidr_block = var.public_cidr_1
    vpc_id = aws_vpc.IAC.id
    availability_zone = "us-east-1a"
-   map_public_ip_on_launch = true
+   map_public_ip_on_launch = false
    tags ={
     Name = "MyPub"
    }
@@ -20,7 +20,7 @@ resource "aws_subnet" "Public_subnet2" {
    cidr_block = var.public_cidr_2
    vpc_id = aws_vpc.IAC.id
    availability_zone = "us-east-1b"
-   map_public_ip_on_launch = true
+   map_public_ip_on_launch = false
    tags ={
     Name = "MyPub"
    }
@@ -59,7 +59,7 @@ resource "aws_internet_gateway" "MY_IGW"{
 
 # Create an Elastic IP for the NAT Gateway
 resource "aws_eip" "nat_gateway_eip" {
-
+    
 }
 
 # Create a NAT Gateway in the public subnet
@@ -113,6 +113,7 @@ resource "aws_security_group" "allow_tls" {
   }
 
   egress {
+    description = "by default allow all"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
